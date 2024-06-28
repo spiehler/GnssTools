@@ -1,16 +1,59 @@
 ﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+<RadzenComponents />
+
+<RadzenLayout>
+
+    <RadzenHeader>
+        <ChildContent>
+            <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start" Gap="0px">
+                <RadzenColumn Size="5">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+                        <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
+                        <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">GNSS Tools</span>
+                    </RadzenStack>
+                </RadzenColumn>
+                <RadzenColumn Size="7">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End">
+                        <div Class="rz-display-none rz-display-sm-inline-flex align-items-center">
+                            <a href="/docs/" title="Radzen Blazor Components Documentation" Class="rz-mx-2 rz-mx-lg-4" target="_blank">Documentation</a>
+                            <a href="https://www.radzen.com/" title="Create .NET Core web applications fast & easy" Class="rz-text-nowrap rz-mx-2 rz-mx-lg-4" target="_blank">About Radzen</a>
+                            <a href="https://github.com/radzenhq/radzen-blazor" title="Star Radzen Blazor Components on GitHub" Class="rz-text-nowrap rz-mx-2 rz-mx-lg-4" target="_blank">GitHub</a>
+                        </div>
+                        <RadzenSidebarToggle Icon="settings" Click="@(() => configSidebarExpanded = !configSidebarExpanded)" Class="rz-m-0" />
+                    </RadzenStack>
+                </RadzenColumn>
+            </RadzenRow>
+        </ChildContent>
+    </RadzenHeader>
+
+    <RadzenSidebar Responsive="false" @bind-Expanded="@sidebarExpanded">
+        <RadzenPanelMenu>
+            <RadzenPanelMenuItem Text="Home" Icon="home" Path="/"/>
+            <RadzenPanelMenuItem Text="Users" Icon="account_box" Path="weather" />
+            <RadzenPanelMenuItem Text="Bluetooth" Icon="account_box" Path="bluetooth" />
+        </RadzenPanelMenu>
+        <div class="rz-p-4">
+            Sidebar
         </div>
+    </RadzenSidebar>
 
-        <article class="content px-4">
+    <RadzenSidebar Responsive="false" @bind-Expanded="@configSidebarExpanded" Style="grid-area: rz-config-sidebar; background-color: var(--rz-body-background-color); color: var(--rz-text-color);">
+    </RadzenSidebar>
+    
+    <RadzenBody>
+        <RadzenContentContainer Name="main">
             @Body
-        </article>
-    </main>
-</div>
+        </RadzenContentContainer>
+    </RadzenBody>
+    
+    <RadzenFooter>
+        Footer
+    </RadzenFooter>
+
+</RadzenLayout>
+
+@code {
+    bool sidebarExpanded = false;
+    bool configSidebarExpanded = false;
+}
