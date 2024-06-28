@@ -53,7 +53,24 @@
 
 </RadzenLayout>
 
+@if (!rendered)
+{
+    <div Class="rz-app-loading">
+        <div Class="logo-loading"></div>
+    </div>
+}
+
+
 @code {
     bool sidebarExpanded = false;
     bool configSidebarExpanded = false;
+    bool rendered = false;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            rendered = true;
+        }
+    }
 }
