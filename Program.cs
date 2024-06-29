@@ -12,5 +12,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 builder.Services.AddBluetoothNavigator();
 builder.Services.AddRadzenComponents();
+builder.Services.AddGeolocationServices();
 
 await builder.Build().RunAsync();

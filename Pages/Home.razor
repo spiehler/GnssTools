@@ -1,8 +1,10 @@
 ﻿@page "/"
 
+@inject IGeolocationService Geolocation
+
 <PageTitle>Home</PageTitle>
 
-<OpenStreetMap Style="height:100%; width:100%" Zoom="16" Center="new Coordinate(9.88, 48.24)">
+<OpenStreetMap @ref="_map" Style="height:100%; width:100%" Zoom="16">
     <Layers>
         <Layer SourceType="SourceType.TileWMS"
                Url="https://ows.terrestris.de/osm-vectortiles/osm"
@@ -11,3 +13,43 @@
         </Layer>
     </Layers>
 </OpenStreetMap>
+
+@code {
+
+    readonly PositionOptions _options = new()
+    {
+        EnableHighAccuracy = true,
+        MaximumAge = null,
+        Timeout = 15_000
+    };
+
+    GeolocationPosition? _position;
+    GeolocationPositionError? _positionError;
+    private Map _map;
+    bool _isLoading = true;
+
+    protected override void OnInitialized() =>
+        Geolocation.GetCurrentPosition(
+            component: this,
+            onSuccessCallbackMethodName: nameof(OnPositionReceived),
+            onErrorCallbackMethodName: nameof(OnPositionError),
+            options: _options);
+
+    [JSInvokable]
+    public void OnPositionReceived(GeolocationPosition position)
+    {
+        _isLoading = false;
+        _position = position;
+        _map.SetCenter(new Coordinate(_position.Coords.Longitude, _position.Coords.Latitude));
+        StateHasChanged();
+    }
+
+    [JSInvokable]
+    public void OnPositionError(GeolocationPositionError positionError)
+    {
+        _isLoading = false;
+        _positionError = positionError;
+        StateHasChanged();
+    }
+
+}
