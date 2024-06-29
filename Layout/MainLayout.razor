@@ -2,43 +2,24 @@
 
 <RadzenComponents />
 
-<RadzenLayout>
+<RadzenLayout style="position: relative;grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body'">
 
     <RadzenHeader>
-        <ChildContent>
-            <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start" Gap="0px">
-                <RadzenColumn Size="5">
-                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
-                        <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
-                        <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">GNSS Tools</span>
-                    </RadzenStack>
-                </RadzenColumn>
-                <RadzenColumn Size="7">
-                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End">
-                        <div Class="rz-display-none rz-display-sm-inline-flex align-items-center">
-                            <a href="/docs/" title="Radzen Blazor Components Documentation" Class="rz-mx-2 rz-mx-lg-4" target="_blank">Documentation</a>
-                            <a href="https://www.radzen.com/" title="Create .NET Core web applications fast & easy" Class="rz-text-nowrap rz-mx-2 rz-mx-lg-4" target="_blank">About Radzen</a>
-                            <a href="https://github.com/radzenhq/radzen-blazor" title="Star Radzen Blazor Components on GitHub" Class="rz-text-nowrap rz-mx-2 rz-mx-lg-4" target="_blank">GitHub</a>
-                        </div>
-                        <RadzenSidebarToggle Icon="settings" Click="@(() => configSidebarExpanded = !configSidebarExpanded)" Class="rz-m-0" />
-                    </RadzenStack>
-                </RadzenColumn>
-            </RadzenRow>
-        </ChildContent>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+            <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
+            <RadzenLabel Text="GNSS Tools"/>
+        </RadzenStack>
     </RadzenHeader>
 
-    <RadzenSidebar Responsive="false" @bind-Expanded="@sidebarExpanded">
+    <RadzenSidebar Responsive="false" @bind-Expanded="@sidebarExpanded" style="position: absolute; z-index: 3">
         <RadzenPanelMenu>
             <RadzenPanelMenuItem Text="Home" Icon="home" Path="/"/>
             <RadzenPanelMenuItem Text="Users" Icon="account_box" Path="weather" />
-            <RadzenPanelMenuItem Text="Bluetooth" Icon="account_box" Path="bluetooth" />
+            <RadzenPanelMenuItem Text="Bluetooth" Icon="bluetooth" Path="bluetooth" />
         </RadzenPanelMenu>
         <div class="rz-p-4">
             Sidebar
         </div>
-    </RadzenSidebar>
-
-    <RadzenSidebar Responsive="false" @bind-Expanded="@configSidebarExpanded" Style="grid-area: rz-config-sidebar; background-color: var(--rz-body-background-color); color: var(--rz-text-color);">
     </RadzenSidebar>
     
     <RadzenBody>
@@ -51,6 +32,11 @@
         Footer
     </RadzenFooter>
 
+    
+    @if (sidebarExpanded)
+    {
+        <div @onclick="@(() => sidebarExpanded = false)" class="rz-dialog-mask" style="position: absolute; z-index: 2"></div>
+    }
 </RadzenLayout>
 
 @if (!rendered)
@@ -63,7 +49,6 @@
 
 @code {
     bool sidebarExpanded = false;
-    bool configSidebarExpanded = false;
     bool rendered = false;
 
     protected override void OnAfterRender(bool firstRender)
