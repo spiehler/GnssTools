@@ -34,10 +34,6 @@
     <RadzenFooter>
         Footer
     </RadzenFooter>
-    @if (sidebarExpanded)
-    {
-        <div @onclick="@(() => sidebarExpanded = false)" class="rz-dialog-mask" style="position: absolute; z-index: 2"></div>
-    }
 </RadzenLayout>
 
 @if (!rendered)
