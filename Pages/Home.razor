@@ -4,7 +4,7 @@
 
 <PageTitle>Home</PageTitle>
 
-<OpenStreetMap @ref="_map" Style="height:100%; width:100%" Zoom="16">
+<OpenStreetMap @ref="_map" Style="height:100%; width:100%">
     <Layers>
         <Layer SourceType="SourceType.TileWMS"
                Url="https://ows.terrestris.de/osm-vectortiles/osm"
@@ -19,9 +19,9 @@
     readonly PositionOptions _options = new()
     {
         EnableHighAccuracy = true,
-        
-        MaximumAge = null,
-        Timeout = 5000
+
+        MaximumAge = 1000D,
+        Timeout = 10000D
     };
 
     GeolocationPosition? _position;
@@ -29,12 +29,15 @@
     private Map? _map;
     bool _isLoading = true;
 
-    protected override void OnInitialized() =>
+
+    protected override void OnInitialized()
+    {
         Geolocation.WatchPosition(
             component: this,
             onSuccessCallbackMethodName: nameof(OnPositionReceived),
             onErrorCallbackMethodName: nameof(OnPositionError),
             options: _options);
+    }
 
     [JSInvokable]
     public void OnPositionReceived(GeolocationPosition position)
@@ -42,6 +45,7 @@
         _isLoading = false;
         _position = position;
         _map.SetCenter(new Coordinate(_position.Coords.Longitude, _position.Coords.Latitude));
+        //_map.SetZoom(16);
         StateHasChanged();
     }
 
