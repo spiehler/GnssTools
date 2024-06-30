@@ -19,17 +19,18 @@
     readonly PositionOptions _options = new()
     {
         EnableHighAccuracy = true,
+        
         MaximumAge = null,
-        Timeout = 15_000
+        Timeout = 5000
     };
 
     GeolocationPosition? _position;
     GeolocationPositionError? _positionError;
-    private Map _map;
+    private Map? _map;
     bool _isLoading = true;
 
     protected override void OnInitialized() =>
-        Geolocation.GetCurrentPosition(
+        Geolocation.WatchPosition(
             component: this,
             onSuccessCallbackMethodName: nameof(OnPositionReceived),
             onErrorCallbackMethodName: nameof(OnPositionError),
