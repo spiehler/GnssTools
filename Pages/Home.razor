@@ -13,7 +13,7 @@
         </Layer>
     </Layers>
     <Features>
-        <Point Radius="4" Coordinate=@_center></Point>
+        <Point @ref="_centerMarker" Radius="4" Coordinate=@_center></Point>
     </Features>
 </OpenStreetMap>
 
@@ -29,6 +29,7 @@
     GeolocationPosition? _position;
     GeolocationPositionError? _positionError;
     private Map? _map;
+    private OpenLayers.Blazor.Point? _centerMarker;
     Coordinate _center = new Coordinate(0, 0);
     bool _isLoading = true;
 
@@ -48,6 +49,7 @@
         _isLoading = false;
         _position = position;
         _center = new Coordinate(_position.Coords.Longitude, _position.Coords.Latitude);
+        _map.ReadCoordinates(_centerMarker);
         //_map.SetCenter(_center);
         //_map.MarkersList.Add(new Marker(_center, "location-heading.svg", 5, 5, 5, 5) {Scale = 1, Popup = true});
         //_map.SetMarkers().
