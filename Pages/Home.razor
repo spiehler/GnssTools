@@ -13,7 +13,8 @@
         </Layer>
     </Layers>
     <Features>
-        <Marker Type="OpenLayers.Blazor.MarkerType.MarkerPin" Coordinate=@_center></Marker>
+        <Point Radius="5" Coordinate="@_center"></Point>
+        <Marker Type="OpenLayers.Blazor.MarkerType.MarkerPin" Coordinate="@_center"></Marker>
     </Features>
 </OpenStreetMap>
 
